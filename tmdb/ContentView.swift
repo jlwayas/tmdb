@@ -22,18 +22,13 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            MovieListView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }.tag(0)
-            MovieSearchView()
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                }.tag(1)
+            NavigationView{ MovieHomeView() }
+                .tabItem { Label("Home", systemImage: "house") }
+                .tag(0)
+            NavigationView { MovieSearchView() }
+                .tabItem { Label("Search", systemImage: "magnifyingglass") }
+                .tag(1)
         }
-//        .accentColor(.white)
     }
 }
 
