@@ -26,11 +26,14 @@ struct MovieDetailListView: View {
             }
             
             Text(movie.overview)
-            HStack {
+            HStack(spacing: 0) {
                 if !movie.ratingText.isEmpty {
                     Text(movie.ratingText).foregroundColor(.yellow)
+                    Text(movie.negativeRatingText).foregroundColor(.gray)
                 }
                 Text(movie.scoreText)
+                    .padding(.leading, 16)
+                Spacer()
             }
             
 //            Divider()
@@ -98,6 +101,8 @@ struct MovieDetailListView: View {
                 }
             }
         }
+        
+        .listStyle(PlainListStyle())
         .sheet(item: self.$selectedTrailer) { trailer in
             SafariView(url: trailer.youtubeURL!)
         }

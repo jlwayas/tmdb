@@ -67,6 +67,14 @@ struct Movie: Decodable, Identifiable, Hashable {
         return ratingText
     }
     
+    var negativeRatingText: String {
+        let rating = 10 - Int(voteAverage)
+        let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
+            return acc + "★"
+        }
+        return ratingText
+    }
+    
     var scoreText: String {
         guard ratingText.count > 0 else {
             return "n/a"

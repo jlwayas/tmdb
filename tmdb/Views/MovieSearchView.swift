@@ -36,6 +36,7 @@ struct MovieSearchView: View {
             .onAppear {
                 self.movieSearchState.startObserve()
             }
+            .listStyle(PlainListStyle())
             .navigationBarTitle("Search")
         }
     }

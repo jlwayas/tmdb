@@ -9,10 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     
+//    init() {
+//        UITabBar.appearance().isTranslucent = true
+////        UITabBar.appearance().barTintColor = UIColor.black
+//        UITableView.appearance().separatorStyle = .none
+//    }
+    
     init() {
-        UITabBar.appearance().isTranslucent = true
-//        UITabBar.appearance().barTintColor = UIColor.black
         UITableView.appearance().separatorStyle = .none
+        UITabBar.appearance().isTranslucent = true
     }
     
     var body: some View {

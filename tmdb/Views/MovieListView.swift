@@ -14,12 +14,24 @@ struct MovieListView: View {
     @ObservedObject private var topRatedState = MovieListState()
     @ObservedObject private var popularState = MovieListState()
     
+    init() {
+        if #available(iOS 14.0, *) {
+            // iOS 14 doesn't have extra separators below the list by default.
+        } else {
+            // To remove only extra separators below the list:
+            UITableView.appearance().tableFooterView = UIView()
+        }
+
+        // To remove all separators including the actual ones:
+        UITableView.appearance().separatorStyle = .none
+    }
+    
     var body: some View {
         NavigationView {
             List {
                 Group {
                     if nowPlayingState.movies != nil {
-                        MoviePosterCarouselView(title: "Now Playing", movies: nowPlayingState.movies!)
+                        MovieThumbnailCarouselView(title: "Now Playing", movies: nowPlayingState.movies!, thumbnailType: .poster())
                     } else {
                         LoadingView(isLoading: nowPlayingState.isLoading, error: nowPlayingState.error) {
                             self.nowPlayingState.loadMovies(with: .nowPlaying)
@@ -27,10 +39,11 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 0, trailing: 0))
+                .listStyle(PlainListStyle())
                 
                 Group {
                     if upcomingState.movies != nil {
-                        MovieBackdropCarouselView(title: "Upcoming", movies: upcomingState.movies!)
+                        MovieThumbnailCarouselView(title: "Upcoming", movies: upcomingState.movies!, thumbnailType: .backdrop)
                     } else {
                         LoadingView(isLoading: upcomingState.isLoading, error: upcomingState.error) {
                             self.upcomingState.loadMovies(with: .upcoming)
@@ -38,10 +51,11 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listStyle(PlainListStyle())
                 
                 Group {
                     if topRatedState.movies != nil {
-                        MovieBackdropCarouselView(title: "Top Rated", movies: topRatedState.movies!)
+                        MovieThumbnailCarouselView(title: "Top Rated", movies: topRatedState.movies!, thumbnailType: .poster())
                     } else {
                         LoadingView(isLoading: topRatedState.isLoading, error: topRatedState.error) {
                             self.topRatedState.loadMovies(with: .topRated)
@@ -49,10 +63,11 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-//
+                .listStyle(PlainListStyle())
+                
                 Group {
                     if popularState.movies != nil {
-                        MovieBackdropCarouselView(title: "Popular", movies: popularState.movies!)
+                        MovieThumbnailCarouselView(title: "Popular", movies: popularState.movies!, thumbnailType: .poster())
                     } else {
                         LoadingView(isLoading: popularState.isLoading, error: popularState.error) {
                             self.popularState.loadMovies(with: .popular)
@@ -60,8 +75,9 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listStyle(PlainListStyle())
             }
-            .navigationBarTitle("The MovieDB")
+            .navigationTitle("TMDB")
         }
         .onAppear {
             self.nowPlayingState.loadMovies(with: .nowPlaying)
