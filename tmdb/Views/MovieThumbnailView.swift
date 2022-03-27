@@ -67,7 +67,7 @@ struct MovieThumbnailView: View {
     }
 }
 
-struct MoviePosterCard_Previews: PreviewProvider {
+struct MovieThumbnailView_Preview : PreviewProvider {
     static var previews: some View {
         Group {
             MovieThumbnailView(movie: Movie.stubbedMovie, thumbnailType: .poster(showTitle: true))

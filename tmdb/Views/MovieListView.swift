@@ -39,7 +39,7 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 0, trailing: 0))
-                .listStyle(PlainListStyle())
+                .listRowSeparator(.hidden)
                 
                 Group {
                     if upcomingState.movies != nil {
@@ -51,7 +51,7 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-                .listStyle(PlainListStyle())
+                .listRowSeparator(.hidden)
                 
                 Group {
                     if topRatedState.movies != nil {
@@ -63,8 +63,7 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-                .listStyle(PlainListStyle())
-                
+                .listRowSeparator(.hidden)
                 Group {
                     if popularState.movies != nil {
                         MovieThumbnailCarouselView(title: "Popular", movies: popularState.movies!, thumbnailType: .poster())
@@ -75,8 +74,9 @@ struct MovieListView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-                .listStyle(PlainListStyle())
+                .listRowSeparator(.hidden)
             }
+            .listStyle(.plain)
             .navigationTitle("TMDB")
         }
         .onAppear {

@@ -27,7 +27,7 @@ struct MovieThumbnailCarouselView: View {
                             MovieThumbnailView(movie: movie, thumbnailType: thumbnailType)
                                 .movieThumbnailViewFrame(thumbnailType: thumbnailType)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal)
@@ -53,7 +53,7 @@ fileprivate extension View {
     
 }
 
-struct MoviePosterCarouselView_Previews: PreviewProvider {
+struct MovieThumbnailCarouselView_Preview: PreviewProvider {
     
     static let stubbedMovies = Movie.stubbedMovies
     
