@@ -22,8 +22,10 @@ struct MovieSearchView: View {
         }
         .listStyle(.plain)
         .navigationTitle("Search")
-        .onAppear {  movieSearchState.startObserve() }
-        .overlay(overlayView)
+        .onAppear { movieSearchState.startObserve() }
+        .overlay(
+            overlayView
+        )
         .searchable(text: $movieSearchState.query, prompt: "Search movies")
     }
     

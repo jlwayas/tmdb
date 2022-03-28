@@ -21,11 +21,13 @@ struct MovieThumbnailView: View {
     var body: some View {
         containerView
         .onAppear {
-            switch thumbnailType {
-            case .backdrop:
-                imageLoader.loadImage(with: movie.backdropURL)
-            case .poster:
-                imageLoader.loadImage(with: movie.posterURL)
+            withAnimation(.easeInOut(duration: 1.0)) {
+                switch thumbnailType {
+                case .backdrop:
+                    imageLoader.loadImage(with: movie.backdropURL)
+                case .poster:
+                    imageLoader.loadImage(with: movie.posterURL)
+                }
             }
         }
     }

@@ -23,7 +23,11 @@ struct MovieDetailImage: View {
             }
         }
         .aspectRatio(16/9, contentMode: .fit)
-        .onAppear { self.imageLoader.loadImage(with: imageURL) }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.0)) {
+                self.imageLoader.loadImage(with: imageURL)
+            }
+        }
     }
 }
 
