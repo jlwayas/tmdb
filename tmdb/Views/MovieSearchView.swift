@@ -9,39 +9,46 @@ import SwiftUI
 
 struct MovieSearchView: View {
     
-    @ObservedObject var movieSearchState = MovieSearchState()
+    @StateObject var movieSearchState = MovieSearchState()
     
     var body: some View {
-        NavigationView {
-            List {
-                SearchBarView(placeholder: "Search movies", text: self.$movieSearchState.query)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
-                
-                LoadingView(isLoading: self.movieSearchState.isLoading, error: self.movieSearchState.error) {
-                    Task {
-                        await self.movieSearchState.search(query: self.movieSearchState.query)
-                    }
+        List {
+            ForEach(movieSearchState.movies) { movie in
+                NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
+                    MovieRowView(movie: movie)
+                        .padding(.vertical, 8)
                 }
-                
-                if self.movieSearchState.movies != nil {
-                    ForEach(self.movieSearchState.movies!) { movie in
-                        NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
-                            VStack(alignment: .leading) {
-                                Text(movie.title)
-                                Text(movie.yearText)
-                            }
-                        }
-                    }
+            }
+        }
+        .listStyle(.plain)
+        .navigationTitle("Search")
+        .onAppear {  movieSearchState.startObserve() }
+        .overlay(overlayView)
+        .searchable(text: $movieSearchState.query, prompt: "Search movies")
+    }
+    
+    @ViewBuilder
+    private var overlayView: some View {
+        switch movieSearchState.phase {
+        case .empty:
+            if movieSearchState.trimmedQuery.isEmpty {
+                EmptyPlaceholderView(text: "Search your favourite movie", image: Image(systemName: "magnifyingglass"))
+            } else {
+                ProgressView()
+            }
+        case .success(let values) where values.isEmpty:
+            EmptyPlaceholderView(text: "No results", image: Image(systemName: "film"))
+        case .failure(let error):
+            RetryView(text: error.localizedDescription) {
+                Task {
+                    await movieSearchState.search(query: movieSearchState.query)
                 }
-                
             }
-            .onAppear {
-                self.movieSearchState.startObserve()
-            }
-            .listStyle(PlainListStyle())
-            .navigationBarTitle("Search")
+        default:
+            EmptyView()
         }
     }
+    
 }
 
 struct MovieSearchView_Previews: PreviewProvider {
