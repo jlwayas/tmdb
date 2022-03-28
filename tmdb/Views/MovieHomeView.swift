@@ -36,7 +36,6 @@ struct MovieHomeView: View {
         .overlay(
             DataFetchPhaseOverlayView(phase: movieHomeState.phase, retryAction: { loadMovies(invalidateCache: true) })
         )
-        
         .listStyle(.plain)
         .navigationTitle("TMDB")
     }

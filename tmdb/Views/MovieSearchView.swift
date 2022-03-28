@@ -25,7 +25,7 @@ struct MovieSearchView: View {
                 
                 if self.movieSearchState.movies != nil {
                     ForEach(self.movieSearchState.movies!) { movie in
-                        NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
+                        NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
                             VStack(alignment: .leading) {
                                 Text(movie.title)
                                 Text(movie.yearText)

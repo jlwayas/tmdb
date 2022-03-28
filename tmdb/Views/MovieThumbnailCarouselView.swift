@@ -23,7 +23,7 @@ struct MovieThumbnailCarouselView: View {
                 LazyHStack(alignment: .top, spacing: 16) {
                     ForEach(self.movies) { movie in
                         NavigationLink(
-                            destination: MovieDetailView(movieId: movie.id)) {
+                            destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
                             MovieThumbnailView(movie: movie, thumbnailType: thumbnailType)
                                 .movieThumbnailViewFrame(thumbnailType: thumbnailType)
                         }

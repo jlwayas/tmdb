@@ -10,21 +10,56 @@ import SwiftUI
 struct MovieDetailListView: View {
     
     let movie: Movie
-    @State private var selectedTrailer: MovieVideo?
-    let imageLoader = ImageLoader()
+    @Binding var selectedTrailerURL: URL?
     
     var body: some View {
-        List {
-            MovieDetailImage(imageLoader: imageLoader, imageURL: self.movie.backdropURL)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            
-            HStack {
-                Text(movie.genreText)
-                Text("·")
-                Text(movie.yearText)
-                Text(movie.durationText)
+        movieDescriptionSection
+            .listRowSeparator(.visible)
+        movieCastSection
+            .listRowSeparator(.hidden)
+        movieTrailerSection
+    }
+    
+    private var movieCastSection: some View {
+        HStack(alignment: .top, spacing: 4) {
+            if let cast = movie.cast, !cast.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Starring").font(.headline)
+                    ForEach(cast.prefix(9)) { Text($0.name) }
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                Spacer()
             }
-            
+                
+            if let crew = movie.crew, !crew.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    if let directors = movie.directors, !directors.isEmpty {
+                        Text("Director(s)").font(.headline)
+                        ForEach(directors.prefix(2)) { Text($0.name) }
+                    }
+                        
+                    if let producers = movie.producers, !producers.isEmpty {
+                        Text("Producer(s)").font(.headline)
+                            .padding(.top)
+                        ForEach(producers.prefix(2)) { Text($0.name) }
+                    }
+                        
+                    if let screenWriters = movie.screenWriters, !screenWriters.isEmpty {
+                        Text("Screenwriter(s)").font(.headline)
+                            .padding(.top)
+                        ForEach(screenWriters.prefix(2)) { Text($0.name) }
+                    }
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(.vertical)
+    }
+    
+    private var movieDescriptionSection: some View {
+        VStack(alignment: .leading, spacing: 16.0) {
+            Text(movieGenreYearDurationText)
+                    .font(.headline)
             Text(movie.overview)
             HStack(spacing: 0) {
                 if !movie.ratingText.isEmpty {
@@ -35,82 +70,37 @@ struct MovieDetailListView: View {
                     .padding(.leading, 16)
                 Spacer()
             }
-            
-//            Divider()
-            
-            if movie.cast != nil || movie.crew != nil {
-                HStack(alignment: .top, spacing: 4) {
-                    if movie.cast != nil && movie.cast!.count > 0 {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Starring").font(.headline)
-                            ForEach(self.movie.cast!.prefix(9)) { cast in
-                                Text(cast.name)
-                            }
-                        }
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                        Spacer()
-                        
-                    }
-                    
-                    if movie.crew != nil && movie.crew!.count > 0 {
-                        VStack(alignment: .leading, spacing: 4) {
-                            if movie.directors != nil && movie.directors!.count > 0 {
-                                Text("Director(s)").font(.headline)
-                                ForEach(self.movie.directors!.prefix(2)) { crew in
-                                    Text(crew.name)
-                                }
-                            }
-                            
-                            if movie.producers != nil && movie.producers!.count > 0 {
-                                Text("Producer(s)").font(.headline)
-                                    .padding(.top)
-                                ForEach(self.movie.producers!.prefix(2)) { crew in
-                                    Text(crew.name)
-                                }
-                            }
-                            
-                            if movie.screenWriters != nil && movie.screenWriters!.count > 0 {
-                                Text("Screenwriter(s)").font(.headline)
-                                    .padding(.top)
-                                ForEach(self.movie.screenWriters!.prefix(2)) { crew in
-                                    Text(crew.name)
-                                }
-                            }
-                        }
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-            }
-            
-//            Divider()
-            
-            if movie.youtubeTrailers != nil && movie.youtubeTrailers!.count > 0 {
-                Text("Trailers").font(.headline)
-                
-                ForEach(movie.youtubeTrailers!) { trailer in
-                    Button(action: {
-                        self.selectedTrailer = trailer
-                    }) {
-                        HStack {
-                            Text(trailer.name)
-                            Spacer()
-                            Image(systemName: "play.circle.fill")
-                                .foregroundColor(Color(UIColor.systemBlue))
-                        }
-                    }
-                }
-            }
         }
-        
-        .listStyle(PlainListStyle())
-        .sheet(item: self.$selectedTrailer) { trailer in
-            SafariView(url: trailer.youtubeURL!)
+        .padding(.vertical)
+    }
+    
+    private var movieGenreYearDurationText: String {
+        "\(movie.genreText) · \(movie.yearText) · \(movie.durationText)"
+    }
+    
+    @ViewBuilder
+    private var movieTrailerSection: some View {
+        if let youtubeTrailers = movie.youtubeTrailers, !youtubeTrailers.isEmpty {
+            Text("Trailers").font(.headline)
+            ForEach(youtubeTrailers) { trailer in
+                Button(action: {
+                    guard let url = trailer.youtubeURL else { return }
+                    selectedTrailerURL = url
+                }) {
+                    HStack {
+                        Text(trailer.name)
+                        Spacer()
+                        Image(systemName: "play.circle.fill")
+                            .foregroundColor(Color(UIColor.systemBlue))
+                    }
+                }
+            }
         }
     }
 }
 
 struct MovieDetailListView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetailListView(movie: Movie.stubbedMovie)
+        MovieDetailListView(movie: Movie.stubbedMovie, selectedTrailerURL: .constant(URL(string: "https://www.youtube.com")!))
     }
 }
