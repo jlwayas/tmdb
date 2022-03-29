@@ -26,7 +26,7 @@ struct MovieSearchView: View {
         .overlay(
             overlayView
         )
-        .searchable(text: $movieSearchState.query, prompt: "Search movies")
+        .searchable(text: $movieSearchState.query, prompt: "Search movie")
     }
     
     @ViewBuilder

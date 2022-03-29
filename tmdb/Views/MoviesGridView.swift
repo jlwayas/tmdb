@@ -10,8 +10,8 @@ import SwiftUI
 struct MoviesGridView: View {
     
     let title: String
+    let totalResults: Int
     let endpoint: MovieListEndpoint
-    @State private var pageNumber: Int = 1
     @StateObject private var movieListState = MovieListState()
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
@@ -19,29 +19,33 @@ struct MoviesGridView: View {
     var body: some View {
         List {
             ScrollView(.vertical, showsIndicators: false) {
-                if let movieResponse = movieListState.movieResponse {
-                    LazyVGrid(columns: columns) {
-                        Section(header: headerView(totalResults: movieResponse.totalResults)) {
-                            ForEach(movieResponse.results) { movie in
-                                NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
-                                    MovieThumbnailView(movie: movie, thumbnailType: .gridItem)
-                                        .frame(height: 224)
+                LazyVGrid(columns: columns) {
+                    Section(header: headerView(totalResults: totalResults)) {
+                        ForEach(movieListState.query == "" ? movieListState.movies : movieListState.moviesFiltered) { movie in
+                                if movie == movieListState.movies.last {
+                                    Text("\(movie.title)")
+                                } else {
+                                    NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
+                                            MovieThumbnailView(movie: movie, thumbnailType: .gridItem)
+                                                .frame(height: 224)
+                                        }
+                                        .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
                             }
                         }
                     }
-                }
             }
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(.plain)
+        .onAppear{ movieListState.startObserve() }
         .navigationBarTitle(title, displayMode: .inline)
         .overlay(
-            DataFetchPhaseOverlayView(phase: movieListState.phase, retryAction: loadMovies)
+            DataFetchPhaseOverlayView(phase: movieListState.phase, retryAction: loadFirstPageMovies)
         )
-        .refreshable { loadMovies() }
-        .task { loadMovies() }
+        .refreshable { resetPages() }
+        .searchable(text: $movieListState.query, prompt: "Search movie")
+        .task { loadFirstPageMovies() }
     }
     
     func headerView (totalResults: Int) -> some View {
@@ -54,15 +58,21 @@ struct MoviesGridView: View {
     }
     
     @Sendable
-    private func loadMovies () {
+    private func loadFirstPageMovies () {
         Task {
-            await self.movieListState.fetchMoviesFromEndpoint(endpoint, pageNumber: pageNumber)
+            await self.movieListState.fetchMoviesFromEndpoint(endpoint, pageNumber: movieListState.currentPage)
         }
     }
-}
+    
+    @Sendable
+    private func resetPages () {
+        Task {
+            await self.movieListState.fetchMoviesFromEndpoint(endpoint, pageNumber: movieListState.currentPage)
+        }
+    }}
 
 struct MoviesGridView_Previews: PreviewProvider {
     static var previews: some View {
-        MoviesGridView(title: "Upcoming", endpoint: .nowPlaying)
+        MoviesGridView(title: "Upcoming", totalResults: 99, endpoint: .nowPlaying)
     }
 }

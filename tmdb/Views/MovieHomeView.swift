@@ -14,7 +14,7 @@ struct MovieHomeView: View {
     var body: some View {
         List {
             ForEach(movieHomeState.sections) {
-                MovieThumbnailCarouselView(title: $0.title, movies: $0.movies, thumbnailType: $0.thumbnailType, endpoint: $0.endpoint)
+                MovieThumbnailCarouselView(title: $0.title, totalResults: $0.totalResults, movies: $0.movies, thumbnailType: $0.thumbnailType, endpoint: $0.endpoint)
             }
             .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .listRowSeparator(.hidden)

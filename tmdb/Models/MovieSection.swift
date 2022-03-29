@@ -17,6 +17,8 @@ struct MovieSection: Identifiable {
         endpoint.description
     }
     
+    var totalResults: Int
+    
     var thumbnailType: MovieThumbnailType {
         endpoint.thumbnailType
     }

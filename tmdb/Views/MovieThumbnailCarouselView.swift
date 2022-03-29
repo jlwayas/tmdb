@@ -10,6 +10,7 @@ import SwiftUI
 struct MovieThumbnailCarouselView: View {
     
     let title: String
+    let totalResults: Int
     let movies: [Movie]
     var thumbnailType: MovieThumbnailType = .poster()
     let endpoint: MovieListEndpoint
@@ -18,7 +19,7 @@ struct MovieThumbnailCarouselView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 NavigationLink(
-                    destination: MoviesGridView(title: title, endpoint: endpoint)) {
+                    destination: MoviesGridView(title: title, totalResults: totalResults, endpoint: endpoint)) {
                         Text(title)
                             .font(.system(.title, design: .rounded))
                             .fontWeight(.bold)
@@ -68,8 +69,8 @@ struct MovieThumbnailCarouselView_Preview: PreviewProvider {
     
     static var previews: some View {
         Group {
-            MovieThumbnailCarouselView(title: "Now Playing", movies: stubbedMovies, thumbnailType: .poster(showTitle: true), endpoint: .nowPlaying)
-            MovieThumbnailCarouselView(title: "Upcoming", movies: stubbedMovies, thumbnailType: .backdrop, endpoint: .nowPlaying)
+            MovieThumbnailCarouselView(title: "Now Playing", totalResults: 99, movies: stubbedMovies, thumbnailType: .poster(showTitle: true), endpoint: .nowPlaying)
+            MovieThumbnailCarouselView(title: "Upcoming", totalResults: 99, movies: stubbedMovies, thumbnailType: .backdrop, endpoint: .nowPlaying)
         }
     }
 }
