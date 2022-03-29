@@ -12,13 +12,22 @@ struct MovieThumbnailCarouselView: View {
     let title: String
     let movies: [Movie]
     var thumbnailType: MovieThumbnailType = .poster()
+    let endpoint: MovieListEndpoint
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(title)
-                .font(.system(.title, design: .rounded))
-                .fontWeight(.bold)
-                .padding(.horizontal)
+            HStack {
+                NavigationLink(
+                    destination: MoviesGridView(title: title, endpoint: endpoint)) {
+                        Text(title)
+                            .font(.system(.title, design: .rounded))
+                            .fontWeight(.bold)
+                            .padding(.leading)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                .buttonStyle(.plain)
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top, spacing: 16) {
                     ForEach(self.movies) { movie in
@@ -42,7 +51,7 @@ fileprivate extension View {
     @ViewBuilder
     func movieThumbnailViewFrame(thumbnailType: MovieThumbnailType) -> some View {
         switch thumbnailType {
-        case .poster:
+        case .poster, .gridItem:
             self.frame(width: 204, height: 306)
         case .backdrop:
             self
@@ -59,8 +68,8 @@ struct MovieThumbnailCarouselView_Preview: PreviewProvider {
     
     static var previews: some View {
         Group {
-            MovieThumbnailCarouselView(title: "Now Playing", movies: stubbedMovies, thumbnailType: .poster(showTitle: true))
-            MovieThumbnailCarouselView(title: "Upcoming", movies: stubbedMovies, thumbnailType: .backdrop)
+            MovieThumbnailCarouselView(title: "Now Playing", movies: stubbedMovies, thumbnailType: .poster(showTitle: true), endpoint: .nowPlaying)
+            MovieThumbnailCarouselView(title: "Upcoming", movies: stubbedMovies, thumbnailType: .backdrop, endpoint: .nowPlaying)
         }
     }
 }

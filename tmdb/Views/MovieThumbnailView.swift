@@ -9,6 +9,7 @@ import SwiftUI
 
 enum MovieThumbnailType {
     case backdrop
+    case gridItem
     case poster(showTitle: Bool = true)
 }
 
@@ -18,6 +19,24 @@ struct MovieThumbnailView: View {
     var thumbnailType: MovieThumbnailType = .poster()
     @StateObject var imageLoader = ImageLoader()
     
+    private var cornerRadiusByThumbnailType: CGFloat {
+        switch(thumbnailType) {
+        case .backdrop, .poster:
+            return CGFloat(8)
+        default:
+            return CGFloat(0)
+        }
+    }
+    
+    private var shadowRadiusByThumbnailType: CGFloat {
+        switch(thumbnailType) {
+        case .backdrop, .poster:
+            return CGFloat(4)
+        default:
+            return CGFloat(0)
+        }
+    }
+    
     var body: some View {
         containerView
         .onAppear {
@@ -25,7 +44,7 @@ struct MovieThumbnailView: View {
                 switch thumbnailType {
                 case .backdrop:
                     imageLoader.loadImage(with: movie.backdropURL)
-                case .poster:
+                default:
                     imageLoader.loadImage(with: movie.posterURL)
                 }
             }
@@ -64,9 +83,12 @@ struct MovieThumbnailView: View {
                     .layoutPriority(-1)
             }
         }
-        .cornerRadius(8)
-        .shadow(radius: 4)
+        .cornerRadius(cornerRadiusByThumbnailType)
+        .shadow(radius: shadowRadiusByThumbnailType)
     }
+    
+    
+    
 }
 
 struct MovieThumbnailView_Preview : PreviewProvider {

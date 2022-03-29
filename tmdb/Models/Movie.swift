@@ -9,6 +9,8 @@ import Foundation
 
 struct MovieResponse: Decodable {
     let results: [Movie]
+    let totalPages: Int
+    let totalResults: Int
 }
 
 struct Movie: Decodable, Identifiable, Hashable {

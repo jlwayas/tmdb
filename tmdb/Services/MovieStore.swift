@@ -17,12 +17,15 @@ class MovieStore: MovieService {
     private let urlSession = URLSession.shared
     private let jsonDecoder = Utils.jsonDecoder
     
-    func fetchMovies(from endpoint: MovieListEndpoint) async throws -> [Movie] {
+    func fetchMovies(from endpoint: MovieListEndpoint, pageNumber: Int = 1) async throws -> MovieResponse {
         guard let url = URL(string: "\(baseAPIURL)/movie/\(endpoint.rawValue)") else {
             throw MovieError.invalidEndpoint
         }
-        let movieResponse: MovieResponse = try await self.loadURLAndDecode(url: url)
-        return movieResponse.results
+        
+        let movieResponse: MovieResponse = try await self.loadURLAndDecode(url: url, params: [
+            "page": String(pageNumber)
+        ])
+        return movieResponse
     }
     
     func fetchMovie(id: Int) async throws -> Movie {

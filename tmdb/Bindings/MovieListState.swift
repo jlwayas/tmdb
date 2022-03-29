@@ -10,27 +10,26 @@ import SwiftUI
 @MainActor
 class MovieListState: ObservableObject {
     
-    @Published var movies: [Movie]?
-    @Published var isLoading: Bool = false
-    @Published var error: NSError?
-    
     private let movieService: MovieService
+    @Published private(set) var phase: DataFetchPhase<MovieResponse?> = .empty
+    
+    var movieResponse: MovieResponse? {
+        phase.value ?? nil
+    }
     
     init(movieService: MovieService = MovieStore.shared) {
         self.movieService = movieService
     }
     
-    func loadMovies(with endpoint: MovieListEndpoint) async  {
-        self.movies = nil
-        self.isLoading = true
+    func fetchMoviesFromEndpoint(_ endpoint: MovieListEndpoint, pageNumber: Int) async {
+        if Task.isCancelled { return }
+        phase = .empty
         
         do {
-            let movies = try await movieService.fetchMovies(from: endpoint)
-            self.movies = movies
-            self.isLoading = false
+            let movieResponse = try await movieService.fetchMovies(from: endpoint, pageNumber: pageNumber)
+            phase = .success(movieResponse)
         } catch {
-            self.isLoading = false
-            self.error = error as NSError
+            phase = .failure(error)
         }
     }
 }
