@@ -13,7 +13,7 @@ struct MoviesGridView: View {
     let totalResults: Int
     let endpoint: MovieListEndpoint
     @StateObject private var movieListState = MovieListState()
-    
+    @State private var searchQuery: String = ""
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var body: some View {
@@ -21,7 +21,7 @@ struct MoviesGridView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     Section(header: headerView(totalResults: totalResults)) {
-                        ForEach(movieListState.query == "" ? movieListState.movies : movieListState.moviesFiltered) { movie in
+                        ForEach(searchQuery == "" ? movieListState.movies : movieListState.movies.filter{ $0.title.localizedCaseInsensitiveContains(searchQuery) }) { movie in
                                 if movie == movieListState.movies.last {
                                     Text("\(movie.title)")
                                 } else {
@@ -44,7 +44,7 @@ struct MoviesGridView: View {
             DataFetchPhaseOverlayView(phase: movieListState.phase, retryAction: loadFirstPageMovies)
         )
         .refreshable { resetPages() }
-        .searchable(text: $movieListState.query, prompt: "Search movie")
+        .searchable(text: $searchQuery, prompt: "Search movie")
         .task { loadFirstPageMovies() }
     }
     
