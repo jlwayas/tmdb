@@ -27,6 +27,7 @@ struct MovieSearchView: View {
             overlayView
         )
         .searchable(text: $movieSearchState.query, prompt: "Search movie")
+        .disableAutocorrection(true)
     }
     
     @ViewBuilder
