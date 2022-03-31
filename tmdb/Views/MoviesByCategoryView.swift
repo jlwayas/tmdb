@@ -18,7 +18,7 @@ struct MoviesByCategoryView: View {
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var body: some View {
-        List {
+//        List {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     Section(header: headerView(label: movieListState.getCounterMovies(from: totalResults))) {
@@ -47,7 +47,7 @@ struct MoviesByCategoryView: View {
             }
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-        }
+//        }
         .listStyle(.plain)
         .onAppear{ movieListState.startObserve() }
         .navigationBarTitle(title, displayMode: .inline)
