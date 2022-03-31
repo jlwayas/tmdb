@@ -9,19 +9,21 @@ import Combine
 import Foundation
 import SwiftUI
 
+@MainActor
 class MovieSearchState: ObservableObject {
     
     @Published var query = ""
-    @Published var movies: [Movie]?
-    @Published var isLoading = false
-    @Published var error: NSError?
+    @Published private(set) var phase: DataFetchPhase<[Movie]> = .empty
     
-    private var subscriptionToken: AnyCancellable?
-    
+    private var cancellables = Set<AnyCancellable>()
     let movieService: MovieService
     
-    var isEmptyResults: Bool {
-        !self.query.isEmpty && self.movies != nil && self.movies!.isEmpty
+    var trimmedQuery: String {
+        query.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    var movies: [Movie] {
+        phase.value ?? []
     }
     
     init(movieService: MovieService = MovieStore.shared) {
@@ -29,43 +31,45 @@ class MovieSearchState: ObservableObject {
     }
     
     func startObserve() {
-        guard subscriptionToken == nil else { return }
-        
-        self.subscriptionToken = self.$query
-            .map { [weak self] text in
-                self?.movies = nil
-                self?.error = nil
-                return text
-                
-        }.throttle(for: 1, scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] in self?.search(query: $0) }
-    }
-    
-    func search(query: String) {
-        self.movies = nil
-        self.isLoading = false
-        self.error = nil
-        
-        guard !query.isEmpty else {
-            return
-        }
-        
-        self.isLoading = true
-        self.movieService.searchMovie(query: query) {[weak self] (result) in
-            guard let self = self, self.query == query else { return }
-            
-            self.isLoading = false
-            switch result {
-            case .success(let response):
-                self.movies = response.results
-            case .failure(let error):
-                self.error = error as NSError
+        guard cancellables.isEmpty else { return }
+        $query
+            .filter { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            .sink { [weak self] _ in
+                self?.phase = .empty
             }
-        }
+            .store(in: &cancellables)
+        
+        $query
+            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            .debounce(for: 1, scheduler: DispatchQueue.main)
+            .sink { query in
+                Task { [weak self] in
+                    guard let self = self else { return }
+                    await self.search(query: query)
+                }
+            }
+            .store(in: &cancellables)
     }
     
-    deinit {
-        self.subscriptionToken?.cancel()
-        self.subscriptionToken = nil
+    func search(query: String) async {
+        if Task.isCancelled { return }
+        phase = .empty
+        
+        let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmedQuery.isEmpty else { return }
+        
+        do {
+            let movies = try await movieService.searchMovie(query: trimmedQuery)
+            if Task.isCancelled { return }
+            guard trimmedQuery == self.trimmedQuery  else { return }
+            phase = .success(movies)
+        } catch {
+            if Task.isCancelled { return }
+            guard trimmedQuery == self.trimmedQuery  else { return }
+            phase = .failure(error)
+        }
+        
     }
+    
 }

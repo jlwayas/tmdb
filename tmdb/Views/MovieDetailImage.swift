@@ -9,15 +9,14 @@ import SwiftUI
 
 struct MovieDetailImage: View {
     
-    @ObservedObject var imageLoader: ImageLoader
+    @StateObject private var imageLoader: ImageLoader = ImageLoader()
     let imageURL: URL
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .fill(Color.gray.opacity(0.3))
-            if self.imageLoader.image != nil {
-                Image(uiImage: self.imageLoader.image!)
+            Color.gray.opacity(0.3)
+            if let image = imageLoader.image {
+                Image(uiImage: image)
                     .resizable()
             } else {
                 Text("Without image")
@@ -25,13 +24,15 @@ struct MovieDetailImage: View {
         }
         .aspectRatio(16/9, contentMode: .fit)
         .onAppear {
-            self.imageLoader.loadImage(with: self.imageURL)
+            withAnimation(.easeInOut(duration: 1.0)) {
+                self.imageLoader.loadImage(with: imageURL)
+            }
         }
     }
 }
 
 struct MovieDetailImage_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetailImage(imageLoader: ImageLoader(), imageURL: Movie.stubbedMovie.backdropURL)
+        MovieDetailImage(imageURL: Movie.stubbedMovie.backdropURL)
     }
 }

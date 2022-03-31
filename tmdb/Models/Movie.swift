@@ -9,6 +9,8 @@ import Foundation
 
 struct MovieResponse: Decodable {
     let results: [Movie]
+    let totalPages: Int
+    let totalResults: Int
 }
 
 struct Movie: Decodable, Identifiable, Hashable {
@@ -61,6 +63,14 @@ struct Movie: Decodable, Identifiable, Hashable {
     
     var ratingText: String {
         let rating = Int(voteAverage)
+        let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
+            return acc + "★"
+        }
+        return ratingText
+    }
+    
+    var negativeRatingText: String {
+        let rating = 10 - Int(voteAverage)
         let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
             return acc + "★"
         }

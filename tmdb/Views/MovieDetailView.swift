@@ -10,30 +10,46 @@ import SwiftUI
 struct MovieDetailView: View {
     
     let movieId: Int
-    @ObservedObject private var movieDetailState = MovieDetailState()
+    let movieTitle: String
+    @StateObject private var movieDetailState = MovieDetailState()
+    @State private var selectedTrailerURL: URL?
     
     var body: some View {
-        ZStack {
-            LoadingView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
-                self.movieDetailState.loadMovie(id: self.movieId)
-            }
-            
-            if movieDetailState.movie != nil {
-                MovieDetailListView(movie: self.movieDetailState.movie!)
+        List {
+            if let movie = movieDetailState.movie {
+                MovieDetailImage(imageURL: movie.backdropURL)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .listRowSeparator(.hidden)
                 
+                MovieDetailListView(movie: movie, selectedTrailerURL: $selectedTrailerURL)
             }
         }
-        .navigationBarTitle(movieDetailState.movie?.title ?? "")
-        .onAppear {
-            self.movieDetailState.loadMovie(id: self.movieId)
+        .listStyle(.plain)
+        .navigationTitle(movieTitle)
+        .overlay(
+            DataFetchPhaseOverlayView(phase: movieDetailState.phase, retryAction: loadMovie)
+        )
+        .refreshable { loadMovie() }
+        .sheet(item: $selectedTrailerURL) { SafariView(url: $0).edgesIgnoringSafeArea(.bottom) }
+        .task { loadMovie() }
+    }
+    
+    @Sendable
+    private func loadMovie () {
+        Task {
+            await self.movieDetailState.loadMovie(id: self.movieId)
         }
     }
+}
+
+extension URL: Identifiable {
+    public var id: Self { self }
 }
 
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            MovieDetailView(movieId: Movie.stubbedMovie.id)
+            MovieDetailView(movieId: Movie.stubbedMovie.id, movieTitle: Movie.stubbedMovie.title)
         }
     }
 }

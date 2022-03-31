@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MoviePosterCarouselView: View {
+struct MovieThumbnailCarouselView: View {
     
     let title: String
     let movies: [Movie]
@@ -19,11 +19,11 @@ struct MoviePosterCarouselView: View {
                 .fontWeight(.bold)
                 .padding(.horizontal)
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .top, spacing: 16) {
+                LazyHStack(alignment: .top, spacing: 16) {
                     ForEach(self.movies) { movie in
                         NavigationLink(
                             destination: MovieDetailView(movieId: movie.id)) {
-                            MoviePosterCard(movie: movie)
+                            MovieThumbnailView(movie: movie)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)
@@ -37,6 +37,6 @@ struct MoviePosterCarouselView: View {
 
 struct MoviePosterCarouselView_Previews: PreviewProvider {
     static var previews: some View {
-        MoviePosterCarouselView(title: "Latest", movies: Movie.stubbedMovies)
+        MovieThumbnailCarouselView(title: "Latest", movies: Movie.stubbedMovies)
     }
 }

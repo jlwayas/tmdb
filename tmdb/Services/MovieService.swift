@@ -9,9 +9,10 @@ import Foundation
 
 protocol MovieService {
     
-    func fetchMovies(from endpoint: MovieListEndpoint, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
-    func fetchMovie(id: Int, completion: @escaping (Result<Movie, MovieError>) -> ())
-    func searchMovie(query: String, completion: @escaping (Result<MovieResponse, MovieError>) -> ())
+    func fetchAllMovies(from endpoint: MovieListEndpoint) async throws -> MovieResponse
+    func fetchMovies(from endpoint: MovieListEndpoint, page: Int) async throws -> [Movie]
+    func fetchMovie(id: Int) async throws -> Movie
+    func searchMovie(query: String) async throws -> [Movie]
 }
 
 enum MovieListEndpoint: String, CaseIterable, Identifiable {

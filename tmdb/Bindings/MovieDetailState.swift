@@ -7,29 +7,30 @@
 
 import SwiftUI
 
+@MainActor
 class MovieDetailState: ObservableObject {
     
     private let movieService: MovieService
-    @Published var movie: Movie?
-    @Published var isLoading: Bool = false
-    @Published var error: NSError?
+    @Published private(set) var phase: DataFetchPhase<Movie?> = .empty
+    
+    var movie: Movie? {
+        phase.value ?? nil
+    }
     
     init(movieService: MovieService = MovieStore.shared) {
         self.movieService = movieService
     }
     
-    func loadMovie(id: Int) {
-        self.movie = nil
-        self.isLoading = false
-        self.movieService.fetchMovie(id: id) { [weak self] (result) in
-            guard let self = self else { return }
-            self.isLoading = false
-            switch result {
-            case .success(let movie):
-                self.movie = movie
-            case .failure(let error):
-                self.error = error as NSError
-            }
+    func loadMovie(id: Int) async {
+        if Task.isCancelled { return }
+        
+        phase = .empty
+        
+        do {
+            let movie = try await movieService.fetchMovie(id: id)
+            phase = .success(movie)
+        } catch {
+            phase = .failure(error)
         }
     }
 }
