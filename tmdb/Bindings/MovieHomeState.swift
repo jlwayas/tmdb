@@ -68,8 +68,8 @@ class MovieHomeState: ObservableObject {
     
     private func fetchMoviesFromEndpoint(_ endpoint: MovieListEndpoint) async -> Result <MovieSection, Error> {
         do {
-            let moviesResponse = try await movieService.fetchAllMovies(from: endpoint)
-            return .success(.init(movies: moviesResponse.results, endpoint: endpoint, totalPages: moviesResponse.totalPages, totalResults: moviesResponse.totalResults))
+            let movies = try await movieService.fetchMovies(from: endpoint, page: 1)
+            return .success(.init(movies: movies, endpoint: endpoint))
         } catch {
             return .failure(error)
         }

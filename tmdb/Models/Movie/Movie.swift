@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct MovieResponse: Decodable {
-    let results: [Movie]
-    let totalPages: Int
-    let totalResults: Int
-}
-
 struct Movie: Decodable, Identifiable, Hashable {
     static func == (lhs: Movie, rhs: Movie) -> Bool {
         lhs.id == rhs.id
@@ -122,47 +116,4 @@ struct Movie: Decodable, Identifiable, Hashable {
         videos?.results.filter { $0.youtubeURL != nil }
     }
     
-}
-
-struct MovieGenre: Decodable {
-    
-    let name: String
-}
-
-struct MovieCredit: Decodable {
-    
-    let cast: [MovieCast]
-    let crew: [MovieCrew]
-}
-
-struct MovieCast: Decodable, Identifiable {
-    let id: Int
-    let character: String
-    let name: String
-}
-
-struct MovieCrew: Decodable, Identifiable {
-    let id: Int
-    let job: String
-    let name: String
-}
-
-struct MovieVideoResponse: Decodable {
-    
-    let results: [MovieVideo]
-}
-
-struct MovieVideo: Decodable, Identifiable {
-    
-    let id: String
-    let key: String
-    let name: String
-    let site: String
-    
-    var youtubeURL: URL? {
-        guard site == "YouTube" else {
-            return nil
-        }
-        return URL(string: "https://youtube.com/watch?v=\(key)")
-    }
 }
