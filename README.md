@@ -22,6 +22,11 @@
 + Programmatic UI
 + Pagination and infinite scroll by category
 
+## Next Steps
++ Implement save data in CoreData
++ SignIn, signUp and Logout
++ Implement logic to show Tv's
+
 ## Project Structure
     
     ├── tmdb                    # Source files
@@ -43,7 +48,7 @@
 
 ### Helpers
 
-+ Utils
++ Utils.swift
 
 ### Models
 **Enums**
@@ -111,4 +116,4 @@ Es el primer principio y buenas prácticas de SOLID, el cuál nos dicta que un m
 + Fácil de desacoplar requerimientos
 + Fácil de mantener
 + Aplicar los principios SOLID y DRY
-+ +Uso de buenas prácticas
++ Uso de buenas prácticas
