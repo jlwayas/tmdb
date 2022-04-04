@@ -35,7 +35,7 @@ extension MovieSection {
     static var stubs: [MovieSection] {
         let stubbedMovies = Movie.stubbedMovies
         return MovieListEndpoint.allCases.map {
-            MovieSection(movies: stubbedMovies.shuffled(), endpoint: $0, totalPages: 7, totalResults: 99)
+            MovieSection(movies: stubbedMovies.shuffled(), endpoint: $0)
         }
     }
     
