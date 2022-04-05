@@ -36,17 +36,19 @@ struct MovieSearchView: View {
         case .empty:
             if movieSearchState.trimmedQuery.isEmpty {
                 EmptyPlaceholderView(text: "Search your favourite movie", image: Image(systemName: "magnifyingglass"))
+                    .accessibilityIdentifier("EmptyPlaceHolder")
             } else {
-                ProgressView()
+                ProgressView().accessibilityIdentifier("ProgressView")
             }
         case .success(let values) where values.isEmpty:
             EmptyPlaceholderView(text: "No results", image: Image(systemName: "film"))
+                .accessibilityIdentifier("NoResults")
         case .failure(let error):
             RetryView(text: error.localizedDescription) {
                 Task {
                     await movieSearchState.search(query: movieSearchState.query)
                 }
-            }
+            }.accessibilityIdentifier("RetryView")
         default:
             EmptyView()
         }

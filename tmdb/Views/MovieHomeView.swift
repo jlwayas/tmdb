@@ -20,6 +20,7 @@ struct MovieHomeView: View {
             .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .listRowSeparator(.hidden)
         }
+        .accessibilityIdentifier("movieList")
         .task { loadMovies(invalidateCache: false) }
         .refreshable { loadMovies(invalidateCache: true) }
         .overlay(

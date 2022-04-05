@@ -25,10 +25,13 @@ struct ContentView: View {
             NavigationView{ MovieHomeView() }
                 .tabItem { Label("Home", systemImage: "house") }
                 .tag(0)
+                .accessibilityIdentifier("Tab0Home")
             NavigationView { MovieSearchView() }
                 .tabItem { Label("Search", systemImage: "magnifyingglass") }
                 .tag(1)
+                .accessibilityIdentifier("tab1Search")
         }
+        .accessibilityIdentifier("tabCOntainer")
     }
 }
 

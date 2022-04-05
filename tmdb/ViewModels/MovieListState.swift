@@ -19,8 +19,6 @@ class MovieListState: ObservableObject {
     @Published private(set) var isFetchingNextPage: Bool = false
     private var cancellables = Set<AnyCancellable>()
     
-    private let pagingData = PagingData(itemsPerPage: 21, maxPageLimit: 1)
-    
     var trimmedQuery: String {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -69,10 +67,12 @@ class MovieListState: ObservableObject {
             
         } catch {
             print(error.localizedDescription)
-        }    }
+        }
+    }
     
     func search(query: String) async {
         if Task.isCancelled { return }
+        self.moviesFiltered = [Movie]()
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !trimmedQuery.isEmpty else { return }

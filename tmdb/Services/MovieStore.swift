@@ -17,15 +17,6 @@ class MovieStore: MovieService {
     private let urlSession = URLSession.shared
     private let jsonDecoder = Utils.jsonDecoder
     
-    func fetchAllMovies(from endpoint: MovieListEndpoint) async throws -> MovieResponse {
-        guard let url = URL(string: "\(baseAPIURL)/movie/\(endpoint.rawValue)") else {
-            throw MovieError.invalidEndpoint
-        }
-        
-        let movieResponse: MovieResponse = try await self.loadURLAndDecode(url: url)
-        return movieResponse
-    }
-    
     func fetchMovies(from endpoint: MovieListEndpoint, page: Int = 1) async throws -> [Movie] {
         guard let url = URL(string: "\(baseAPIURL)/movie/\(endpoint.rawValue)") else {
             throw MovieError.invalidEndpoint

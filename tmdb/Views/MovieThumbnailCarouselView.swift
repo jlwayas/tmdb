@@ -18,17 +18,18 @@ struct MovieThumbnailCarouselView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                NavigationLink(
-                    destination: MoviesByCategoryView(title: title, totalPages: totalPages, totalResults: totalResults, endpoint: endpoint)) {
-                        Text(title)
-                            .font(.system(.title, design: .rounded))
-                            .fontWeight(.bold)
-                            .padding(.leading)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                    }
-                .buttonStyle(.plain)
+            if MovieListEndpoint.nowPlaying != endpoint {
+                HStack {
+                    NavigationLink(
+                        destination: MoviesByCategoryView(title: title, endpoint: endpoint)) {
+                            Text(title)
+                                .font(.system(.title, design: .rounded))
+                                .fontWeight(.bold)
+                                .padding(.leading)
+                        }
+                    .buttonStyle(.plain)
+                    .padding(.trailing)
+                }
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top, spacing: 16) {
