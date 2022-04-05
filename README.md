@@ -109,6 +109,17 @@ by Jesús López
 **UikitViews**
 + SafariView.swift - Bridge view implemented to use Safari with Switui to show the videos with a sheet action
 
+**Views**
++ MovieDetailImage.swift - Reusable view to display an image with aspect ratio 16/9
++ MovieDetailListView.swift - Reusable view to display all the necessary detail information of a movie
++ MovieDetailView.swift - Container view to show the detail of a movie (image, detail) and also show the youtube video
++ MovieHomeView.swift - Container view to show the home of the application
++ MovieRowView.swift - Row type view to show quick detail of movies being filtered from search view
++ MoviesByCategoryView.swift - Container view to display a grid of movies by category
++ +MovieSearchView.swift - Container view to show the rows of movies filtered by the text that the user is typing
++ MovieThumbnailCarouselView.swift - View to display the image of a movie with the three types of layouts (backdrop, grid, poster)
++ MovieThumbnailView.swift - Container view to display a carousel of images for the different categories
+
 ## Questions
 
 ### Single Responsability
