@@ -1,0 +1,154 @@
+{
+    "adult": false,
+    "belongs_to_collection": {
+        "id": 948485,
+        "name": "The Batman Collection",
+        "poster_path": null,
+        "backdrop_path": null
+    },
+    "budget": 185000000,
+    "genres": [],
+    "homepage": "https://www.thebatman.com",
+    "id": 414906,
+    "imdb_id": "tt1877830",
+    "original_language": "en",
+    "original_title": "The Batman",
+    "overview": "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.",
+    "popularity": 2870.043,
+    "production_companies": [
+        {
+            "id": 101405,
+            "logo_path": null,
+            "name": "6th & Idaho",
+            "origin_country": "US"
+        },
+        {
+            "id": 119245,
+            "logo_path": null,
+            "name": "Dylan Clark Productions",
+            "origin_country": "US"
+        },
+        {
+            "id": 128064,
+            "logo_path": "/13F3Jf7EFAcREU0xzZqJnVnyGXu.png",
+            "name": "DC Films",
+            "origin_country": "US"
+        },
+        {
+            "id": 174,
+            "logo_path": "/IuAlhI9eVC9Z8UQWOIDdWRKSEJ.png",
+            "name": "Warner Bros. Pictures",
+            "origin_country": "US"
+        }
+    ],
+    "production_countries": [
+        {
+            "iso_3166_1": "US",
+            "name": "United States of America"
+        }
+    ],
+    "release_date": "",
+    "revenue": 710500000,
+    "runtime": 0,
+    "spoken_languages": [
+        {
+            "english_name": "English",
+            "iso_639_1": "en",
+            "name": "English"
+        }
+    ],
+    "status": "Released",
+    "tagline": "Unmask the truth.",
+    "title": "The Batman",
+    "video": false,
+    "vote_average": 0,
+    "vote_count": 2655,
+    "videos": {
+        "results": [
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "Little Caesars Sneak Peek",
+                "key": "FqnbVhfniys",
+                "site": "YouTube",
+                "size": 1080,
+                "type": "Featurette",
+                "official": false,
+                "published_at": "2022-02-18T16:00:04.000Z",
+                "id": "6227032c2f1be00068fa6e81"
+            },
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "Funeral Scene",
+                "key": "Jtdh0Tkqfdw",
+                "site": "YouTube",
+                "size": 1080,
+                "type": "Clip",
+                "official": true,
+                "published_at": "2022-01-30T20:45:03.000Z",
+                "id": "61f72df8d7cd06011e7c476c"
+            },
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "The Bat and The Cat Trailer",
+                "key": "u34gHaRiBIU",
+                "site": "YouTube",
+                "size": 1080,
+                "type": "Trailer",
+                "official": true,
+                "published_at": "2021-12-27T18:00:27.000Z",
+                "id": "61ca0378b0422800613dc85f"
+            },
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "TV Spot",
+                "key": "NrJRE678TiU",
+                "site": "YouTube",
+                "size": 1080,
+                "type": "Teaser",
+                "official": true,
+                "published_at": "2021-10-17T23:10:56.000Z",
+                "id": "61b6f96ec616ac009a10559a"
+            },
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "Main Trailer",
+                "key": "mqqft2x_Aa4",
+                "site": "YouTube",
+                "size": 1080,
+                "type": "Trailer",
+                "official": true,
+                "published_at": "2021-10-16T20:36:30.000Z",
+                "id": "616b3875e004a6005f0676c4"
+            },
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "DC FanDome Teaser",
+                "key": "NLOp_6uPccQ",
+                "site": "YouTube",
+                "size": 1080,
+                "type": "Trailer",
+                "official": true,
+                "published_at": "2020-08-23T00:57:22.000Z",
+                "id": "5f41bf4d6a34480036b453da"
+            },
+            {
+                "iso_639_1": "en",
+                "iso_3166_1": "US",
+                "name": "Camera Test",
+                "key": "391277390",
+                "site": "Vimeo",
+                "size": 1080,
+                "type": "Teaser",
+                "official": false,
+                "published_at": "2020-02-13T17:00:40.000Z",
+                "id": "5e45e3c09603310015f6454c"
+            }
+        ]
+    }
+}
