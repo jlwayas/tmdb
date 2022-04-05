@@ -97,15 +97,5 @@ class when_loading_movies: XCTestCase {
         XCTAssertEqual(6, movie?.youtubeTrailers?.count)
     }
     
-//
-//    func test_should_make_sure_movie_complementary_texts_are_not_valid() {
-//        // Given
-//        var movie: Movie? = nil
-//        // When
-//        movie = Movie.stubbedMovie
-//        // Then
-//        XCTAssertEqual("★★★★★★★", movie!.ratingText)
-////        XCTAssertEqual(URL(string: "\(baseURL)74xTEgt7R36Fpooo50r9T25onhq.jpg"), movie!.posterURL)
-//    }
 }
 

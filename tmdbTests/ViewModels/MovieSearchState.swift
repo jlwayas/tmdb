@@ -14,7 +14,7 @@ class MovieSearchViewModelSpec: XCTestCase {
     
     var viewModel: MovieSearchState!
     
-    func test_should_make_sure_movies_are_load_and_decode() async throws {
+    func test_should_make_sure_search_movies_and_decode() async throws {
         viewModel = .init()
         let query: String = "Batman"
         
@@ -23,22 +23,22 @@ class MovieSearchViewModelSpec: XCTestCase {
         XCTAssertNotNil(viewModel.movies)
     }
     
-    
     func test_should_make_sure_movies_are_load_and_decode2() async throws {
         viewModel = .init()
-        let query: String = "[]"
+        let query: String = "¬¬¬"
         
         let _ = await viewModel.search(query: query)
         
-        XCTAssertNotNil(viewModel.movies)
+        XCTAssertTrue(viewModel.movies.isEmpty)
     }
     
-    func test_should_make_sure_movies_are_load_and_decode3() async throws {
+    func test_should_make_sure_trimming_movie_name_and_decode() async throws {
+        // Given
         viewModel = .init()
         let query: String = ""
-        
+        // When
         let _ = await viewModel.search(query: query)
-        
-        XCTAssertNotNil(viewModel.movies)
+        // Then
+        XCTAssertTrue(viewModel.movies.isEmpty)
     }
 }
