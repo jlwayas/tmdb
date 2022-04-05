@@ -10,8 +10,6 @@ import SwiftUI
 struct MoviesByCategoryView: View {
     
     let title: String
-    let totalPages: Int
-    let totalResults: Int
     let endpoint: MovieListEndpoint
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @StateObject private var movieListState = MovieListState()
@@ -21,10 +19,10 @@ struct MoviesByCategoryView: View {
 //        List {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVGrid(columns: columns) {
-                    Section(header: headerView(label: movieListState.getCounterMovies(from: totalResults))) {
+                    Section(header: headerView(label: movieListState.getCounterMovies(from: movieListState.movies.count))) {
                         ForEach(movieListState.query == "" ? movieListState.movies : movieListState.moviesFiltered) { movie in
                             NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
-                                if movie == movieListState.movies.last && movieListState.currentPage < totalPages {
+                                if movie == movieListState.movies.last {
                                     if movieListState.isFetchingNextPage {
                                         bottomProgressView
                                     } else {
@@ -113,6 +111,6 @@ struct MoviesByCategoryView: View {
 
 struct MoviesGridView_Previews: PreviewProvider {
     static var previews: some View {
-        MoviesByCategoryView(title: "Upcoming", totalPages: 7, totalResults: 99, endpoint: .nowPlaying)
+        MoviesByCategoryView(title: "Upcoming", endpoint: .nowPlaying)
     }
 }

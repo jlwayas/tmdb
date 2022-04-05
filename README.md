@@ -34,6 +34,10 @@ by Jesús López
     │   ├── Assets.xcassets
     │   ├── Helpers
     │   ├── Models
+    ├   ├   ├── Enums
+    │   │   ├── Extensions
+    │   │   ├── Movies
+    │   │   ├── MovieSection
     │   ├── Resources
     │   ├── Services
     │   ├── ViewModels
@@ -49,62 +53,61 @@ by Jesús López
 
 ### Helpers
 
-+ Utils.swift
++ Utils.swift - Class that contains the methods to configure the jsonDecoder and the dateFormatter
 
 ### Models
 **Enums**
-+ DataFetchPhase.swift
++ DataFetchPhase.swift - Enum used to map the state (phase: .empty, success and .failure) of the viewModels objects
 
 **Extensions**
-+ Bundle.swift
-+ Movie.swift
-+ MovieSection.swift
++ Bundle.swift - Extension used to implement the loading and decoding of the test json to be able to run the canvas of the views in local mode
++ Movie.swift - Extension used to generate the different dummies of the movie models
 
 **Movies**
-* MovieResponse.swift
-* Movie.swift
-* MovieGenre.swift
-* MovieCredit.swift
-* MovieCast.swift
-* MovieCrew.swift
-* MovieVideoResponse.swift
-* MovieVideo.swift
+* MovieResponse.swift - Base model for mapping the response of a movie
+* Movie.swift - Main model that contains the entire body of a movie as well as autocomputed variables to generate all the necessary data to display on the screen
+* MovieGenre.swift - Model that stores the genre(s) of a movie
+* MovieCredit.swift -Model that stores the credit(s) of a movie
+* MovieCast.swift - Model that stores the cast(s) of a movie
+* MovieCrew.swift - Model that stores the crew(s) of a movie
+* MovieVideoResponse.swift - Model that stores the video(s) of a movie
+* MovieVideo.swift - Model that stores the video of a movie
 
 **Movie Section**
-+ MovieSection.swift
++ MovieSection.swift - Model that stores the base information of the movie categories
 
 **Resources**
-+ movie_info.json
-+ movie_list.json
-+ search_movie.json
++ movie_info.json - Stub that contains the sample information of a movie
++ movie_list.json - Stub that contains the sample information of a list movies
++ search_movie.json - Stub containing sample information for a list of movies to search for
 
 ### Services
 **Class**
-+ MovieStore.swift
++ MovieStore.swift - Class that implements the protocols of the movies services
 
 **Enums**
-+ MovieListEndpoints.swift
-+ MovieError.swift
++ MovieListEndpoints.swift - Enum containing the 4 application endpoint categories
++ MovieError.swift - Enum that contains the different errors that can be displayed in the application
 
 **Protocols**
-+ MovieService.swift
++ MovieService.swift - Protocol that dictates the services that are implemented within the application
 
 ### ViewModels
-+ ImageLoader.swift
-+ MovieHomeState.swift
-+ MovieListState.swift
-+ MovieSearchState.swift
-+ MovieDetailState.swift
++ ImageLoader.swift - ViewModel that has the responsibility to load the images through a URL and store them in cache
++ MovieHomeState.swift - ViewModel that is responsible for loading a group of movie requests asynchronously and the functions on its attributes
++ MovieListState.swift - ViewModel that is responsible for loading the movies by category and for carrying out the pagination of the same asynchronously, offline search of the movies and the functions on the attributes of the same
++ MovieSearchState.swift - ViewModel that is responsible for loading the movies so that they are written on the screen with a 1-second writing delay
++ MovieDetailState.swift - ViewModel that has the responsibility of loading the movies by id and its operations
 
 ### Views
 **Overlays**
 
-+ BlurredBackground.swift
-+ EmptyPlaceholderView.swift
-+ RetryView.swift
++ BlurredBackground.swift - Overlay intended for future implementation to have a gradient colored background
++ EmptyPlaceholderView.swift - Overlay implemented to show the user when there is an empty response, showing a custom text and image
++ RetryView.swift - Overlay implemented to show the user a retry action, it has a callback type attribute
 
 **UikitViews**
-+ SafariView.swift
++ SafariView.swift - Bridge view implemented to use Safari with Switui to show the videos with a sheet action
 
 ## Questions
 

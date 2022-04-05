@@ -21,7 +21,7 @@ struct MovieThumbnailCarouselView: View {
             if MovieListEndpoint.nowPlaying != endpoint {
                 HStack {
                     NavigationLink(
-                        destination: MoviesByCategoryView(title: title, totalPages: totalPages, totalResults: totalResults, endpoint: endpoint)) {
+                        destination: MoviesByCategoryView(title: title, endpoint: endpoint)) {
                             Text(title)
                                 .font(.system(.title, design: .rounded))
                                 .fontWeight(.bold)
