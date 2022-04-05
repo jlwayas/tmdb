@@ -9,7 +9,6 @@ import Foundation
 
 protocol MovieService {
     
-    func fetchAllMovies(from endpoint: MovieListEndpoint) async throws -> MovieResponse
     func fetchMovies(from endpoint: MovieListEndpoint, page: Int) async throws -> [Movie]
     func fetchMovie(id: Int) async throws -> Movie
     func searchMovie(query: String) async throws -> [Movie]
