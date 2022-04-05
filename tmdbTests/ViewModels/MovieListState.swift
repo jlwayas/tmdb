@@ -30,7 +30,7 @@ class MovieListViewModelSpec: XCTestCase {
     func test_should_make_sure_load_movies_by_category_and_load_next_page_movies_and_decode() async throws {
         // Given
         viewModel = .init()
-        let endpoint: MovieListEndpoint = .nowPlaying
+        let endpoint: MovieListEndpoint = .upcoming
         let pageNumber: Int = 1
         // When
         await viewModel.fetchMoviesFromEndpoint(endpoint, pageNumber: pageNumber)
@@ -43,7 +43,7 @@ class MovieListViewModelSpec: XCTestCase {
     func test_should_not_bring_movies_when_page_number_is_0_or_less() async throws {
         // Given
         viewModel = .init()
-        let endpoint: MovieListEndpoint = .nowPlaying
+        let endpoint: MovieListEndpoint = .popular
         let pageNumber: Int = 0
         // When
         await viewModel.fetchMoviesFromEndpoint(endpoint, pageNumber: pageNumber)
@@ -52,7 +52,7 @@ class MovieListViewModelSpec: XCTestCase {
         XCTAssertEqual([], viewModel.movies)
     }
     
-    func test_should_user_type_text_to_searchMovies_in_category_view_in_plural_text() {
+    func test_should_user_type_text_to_search_movies_in_category_view_in_plural_text() {
         // Given
         viewModel = .init()
         let numberMovies: Int = 100
@@ -64,7 +64,7 @@ class MovieListViewModelSpec: XCTestCase {
     }
     
     
-    func test_should_user_type_text_to_searchMovies_in_category_view_in_singular_text() {
+    func test_should_user_type_text_to_search_movies_in_category_view_in_singular_text() {
         // Given
         viewModel = .init()
         let numberMovies: Int = 1
@@ -73,6 +73,26 @@ class MovieListViewModelSpec: XCTestCase {
         // Then
         XCTAssertNotEqual("100 videos", counterMovies)
         XCTAssertEqual("1 video", counterMovies)
+    }
+    
+    func test_should_user_doesnt_type_any_text_to_search() async {
+        // Given
+        viewModel = .init()
+        let query = ""
+        // When
+        await viewModel.search(query: query)
+        // Then
+        XCTAssertEqual(0, viewModel.moviesFiltered.count)
+    }
+    
+    func test_should_user_type_any_text_to_search() async {
+        // Given
+        viewModel = .init()
+        let query = "A"
+        // When
+        await viewModel.search(query: query)
+        // Then
+        XCTAssertEqual(0, viewModel.moviesFiltered.count)
     }
     
 }

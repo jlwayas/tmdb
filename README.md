@@ -1,4 +1,5 @@
 # tmdb
+by Jesús López
 
 ## Version
 1.0

@@ -72,6 +72,7 @@ class MovieListState: ObservableObject {
     
     func search(query: String) async {
         if Task.isCancelled { return }
+        self.moviesFiltered = [Movie]()
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !trimmedQuery.isEmpty else { return }
